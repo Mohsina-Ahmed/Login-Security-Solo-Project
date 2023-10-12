@@ -4,11 +4,16 @@ FROM python:3.9.6-slim-buster
 ENV FLASK_APP=login_form
 
 WORKDIR /app
-COPY . .
+COPY . .  
+
+# Add this line to copy the .env file
+COPY .env .env
 
 RUN python3 -m venv venv
 RUN . venv/bin/activate
 RUN pip3 install -e .
+#RUN pip install python-decouple
+RUN pip install python-dotenv
 
 RUN chmod +x scripts/*
 

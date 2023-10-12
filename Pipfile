@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "==8.1.4"
+faker = "==18.13.0"
+flask = "==2.3.2"
+seleniumbase = "==4.15.13"
+werkzeug = "==2.3.6"
+bandit = "==1.7.5"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

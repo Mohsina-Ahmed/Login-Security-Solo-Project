@@ -1,11 +1,25 @@
 import os
 from flask import Flask
+#from decouple import config
+from dotenv import load_dotenv
+from flask_wtf.csrf import CSRFProtect
+csrf = CSRFProtect()
+
+#Load environment variables from the .env file
+#config()
+load_dotenv()
+
+#Retrieve the SECRET_KEY from the environment variables
+SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    csrf.init_app(app)
+    
     app.config.from_mapping(
-        SECRET_KEY='super_secret_key',
+        #Configure the app with the retirieved SECRET_KEY
+        SECRET_KEY=SECRET_KEY, #Should not use the hard coded secret key
         DATABASE=os.path.join(app.instance_path, 'login_form.sqlite'),
     )
 

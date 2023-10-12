@@ -7,6 +7,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from login_form.db import get_db
 from login_form.user import User
+from flask import Flask
+
 
 bp = Blueprint('auth', __name__, url_prefix='/')
 
