@@ -1,9 +1,10 @@
 import os
-from flask import Flask
+from flask import Flask, make_response
 #from decouple import config
 from dotenv import load_dotenv
 from flask_wtf.csrf import CSRFProtect
 csrf = CSRFProtect()
+
 
 #Load environment variables from the .env file
 #config()
@@ -16,6 +17,9 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     csrf.init_app(app)
+
+    #to set the cookie with SameSite 'lax' attribute  
+    app.config["SESSION_COOKIE_SAMESITE"] = 'lax'
     
     app.config.from_mapping(
         #Configure the app with the retirieved SECRET_KEY
@@ -49,7 +53,13 @@ def create_app(test_config=None):
 
     @app.after_request
     def add_security_headers(resp):
-        resp.headers['Content-Security-Policy']='default-src \'self\''
+        csp = "default-src 'self'; frame-ancestors 'self'; form-action 'self'"
+        resp.headers['Content-Security-Policy']=csp
+        resp.headers['X-Content-Type-Options'] = 'nosniff'
+
+        #Set the header with SameSite Lax attribute
+        resp.headers['Set-Cookie'] = 'username=flask; Secure; HttpOnly; SameSite=Lax; Path=/'
+        
         return resp
 
     return app
